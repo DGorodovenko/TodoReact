@@ -28,7 +28,11 @@ function App() {
   }
 
   function deleteTodo(id) {
-    setTodos(todos.filter((todo) => todo.id !== id))
+    fetch(`http://localhost:3001/todos/${id}`, {
+      method: 'DELETE'
+    }).then(() => {
+      setTodos(todos.filter((todo) => todo.id !== id))
+    })
   }
 
   return (

@@ -29,3 +29,10 @@ app.post('/todos', (req, res) => {
     res.json({ id: this.lastID, text })
   })
 })
+
+app.delete('/todos/:id', (req, res) => {
+  const { id } = req.params
+  db.run('DELETE FROM todos WHERE id = ?', [id], () => {
+    res.json({ deleted: id })
+  })
+})
