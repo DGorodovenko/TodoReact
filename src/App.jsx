@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
 
@@ -6,14 +6,29 @@ function App() {
   const [todos, setTodos] = useState([])
   const [input, setInput] = useState([])
 
+
+  useEffect(() => {
+  fetch('http://localhost:3001/todos')
+    .then((res) => res.json())
+    .then((data) => setTodos(data))
+  }, [])
+
   function addTodo() {
-    if (input.trim() == '') return 
-    setTodos([...todos, input])
-    setInput('')
+  if (input.trim() === '') return
+  fetch('http://localhost:3001/todos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: input })
+  })
+    .then((res) => res.json())
+    .then((newTodo) => {
+      setTodos([...todos, newTodo])
+      setInput('')
+    })
   }
 
-  function deleteTodo(index) {
-    setTodos(todos.filter((_, i) => i != index))
+  function deleteTodo(id) {
+    setTodos(todos.filter((todo) => todo.id !== id))
   }
 
   return (
@@ -32,11 +47,12 @@ function App() {
       <button onClick={addTodo}>Add</button>
 
       <ul>
-      {todos.map((todo, index) => (
-        <li key={index}>{todo}
-        <button onClick={() => deleteTodo(index)}>Delete</button></li>
-      ))}
-    </ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>{todo.text}
+            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
 
     
