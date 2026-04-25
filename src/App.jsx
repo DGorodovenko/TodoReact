@@ -39,16 +39,20 @@ function App() {
     <div>
       <h1>Todo App</h1>
 
-      <input 
-        type="text"
-        value = {input}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if(e.altKey && e.key == 'Enter') addTodo()
-        }}
-        placeholder="Add a new todo ..."
-      />
-      <button onClick={addTodo}>Add</button>
+      <div className="input-row">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.altKey && e.key === 'Enter') addTodo()
+          }}
+          placeholder="Add a new todo..."
+        />
+        <button onClick={addTodo}>Add</button>
+      </div>
+
+      
 
       <ul>
         {todos.map((todo) => (
